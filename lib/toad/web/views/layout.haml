@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+%html
+
+  %head
+    %title= @page_title
+
+    %link(rel="stylesheet" type="text/css" href="/bootstrap.css")
+    %link(rel="stylesheet" type="text/css" href="/toad.css")
+    %script(src="/js/jquery-1.7.2.min.js" type="text/javascript")
+
+  %body
+
+    .container.canvas
+      .topbar
+        .topbar-inner
+          .container.canvas
+            %a.brand(href="/") Toad
+            %ul.nav
+              %li
+                - link_to "Projects", projects_path
+              %li
+                - link_to "Users", users_path
+
+      #primary-content-area
+
+        = yield
+

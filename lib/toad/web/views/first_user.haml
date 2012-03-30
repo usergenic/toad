@@ -1,0 +1,15 @@
+- page_title "First User"
+
+- info do
+  There are no users for this installation, yet.  Why not create the first one and you can be my MASTER!
+  NOTE: After clicking "Create" you will be required to log in with the credentials you provided.
+  %strong Don't forget them!
+
+- form first_user_path do
+  - fieldset do
+    - text_field "username", label: "Username", value: @user.username
+    - password_field "password", label: "Password", value: @user.password
+  - actions do
+    - submit "Create", class: "btn large primary danger"
+
+
