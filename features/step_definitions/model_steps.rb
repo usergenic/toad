@@ -17,8 +17,13 @@ Given(/^there is an? ([^"]*) with (.*)$/) do |type, attrs|
   parse_type(type).create(parse_attrs(attrs)).should be_persisted
 end
 
+Then(/^"([^"]*)" should have ([^"]*) ((?:"[^"]*")(?: and )?)*$/) do |subject, association, associates|
+  subject = find_item_by_name(subject)
+  associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }
+  associates.should == [*subject.send(association)]
+end
+
 Then(/^there should be a ([^"]*) with (.*)$/) do |type, attrs|
-  puts "#{type} = #{parse_type(type).count}"
   parse_type(type).where(parse_attrs(attrs)).count.should == 1
 end
 

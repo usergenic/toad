@@ -121,7 +121,6 @@ module Toad
         title:        params[:title],
         description:  params[:description],
         dependencies: dependencies
-      dependencies = Project.where(title: params[:dependencies])
       redirect project_path(@project.id)
     end
 

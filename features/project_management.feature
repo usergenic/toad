@@ -18,6 +18,7 @@ Scenario: Submit the new project form to create a project
   And I fill in "description" with "Scramble up the goodness"
   And I fill in "dependencies" with tag "Break eggs"
   And I click the "Create" button
-  Then there should be a project with title "Make Omelete" and description "Scramble up the goodness"
-  And I should be on the "Project" page for "Make Omelete"
+  Then I should be on the "Project" page for "Make Omelete"
+  And there should be a project with title "Make Omelete" and description "Scramble up the goodness"
+  And "Make Omelete" should have dependencies "Break eggs"
 
