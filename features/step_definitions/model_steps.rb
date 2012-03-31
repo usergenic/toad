@@ -14,6 +14,7 @@ Given(/^there is an? ([^"]*) with (.*)$/) do |type, attrs|
 end
 
 Then(/^there should be a ([^"]*) with (.*)$/) do |type, attrs|
+  puts "#{type} = #{parse_type(type).count}"
   parse_type(type).where(parse_attrs(attrs)).count.should == 1
 end
 

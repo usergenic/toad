@@ -1,0 +1,9 @@
+- page_title "Edit User: #{@user.username}"
+
+- form user_path(@user.id), method: "put" do
+  - fieldset do
+    - text_field "username", label: "Username", value: @user.username
+    - password_field "password", label: "Password"
+  - actions do
+    - submit "Save Changes"
+    - cancel

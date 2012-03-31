@@ -20,6 +20,10 @@ module Toad::Web::Resources
     "/projects"
   end
 
+  def projects_autocomplete_path
+    join_path projects_path, "autocomplete"
+  end
+
   def project_path(project_id)
     join_path projects_path, project_id
   end
@@ -33,11 +37,15 @@ module Toad::Web::Resources
   end
 
   def remove_project_path(project_id)
-    join_path project_Path(project_id), "remove"
+    join_path project_path(project_id), "remove"
   end
 
   def users_path
     "/users"
+  end
+
+  def users_autocomplete_path
+    join_path users_path, "autocomplete"
   end
 
   def user_path(user_id)

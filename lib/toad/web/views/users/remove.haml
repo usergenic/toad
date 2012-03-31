@@ -1,0 +1,11 @@
+- page_title "Remove User: #{@user.username}"
+
+- info do
+
+  Are you completely sure you want to remove this user?
+  %strong This cannot be undone!
+
+- form user_path(@user.id), method: "delete" do
+  - actions do
+    - submit "Yes, I am completely sure", class: "btn primary danger"
+    - cancel

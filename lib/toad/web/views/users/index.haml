@@ -1,0 +1,13 @@
+- page_title "Users"
+
+%table
+  %thead
+    %tr
+      %th Username
+      %th
+        - link_to "New User", new_user_path, class: "small primary btn"
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td
+          - link_to user.username, user_path(user.id)

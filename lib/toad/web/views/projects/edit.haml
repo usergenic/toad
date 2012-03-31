@@ -1,0 +1,10 @@
+- page_title "Edit Project: #{@project.title}"
+
+- form project_path(@project.id), method: "put" do
+  - fieldset do
+    - text_field "title", label: "Title", value: @project.title
+    - text_area "description", label: "Description", value: @project.description
+    - ajax_list_builder "dependencies", projects_autocomplete_path, label: "Dependencies", value: @project.dependencies.map(&:title)
+  - actions do
+    - submit "Save Changes"
+    - cancel

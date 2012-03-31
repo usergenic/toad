@@ -1,0 +1,12 @@
+- page_title "Remove Project: #{@project.title}"
+
+- info do
+
+  Are you absolutely sure you want to remove this project?
+  %strong This cannot be undone!
+
+- form project_path(@project.id), method: "delete" do
+  - actions do
+    - submit "Yes, I am absolutely sure", class: "btn primary danger"
+    - cancel
+

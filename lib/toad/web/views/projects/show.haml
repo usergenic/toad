@@ -1,0 +1,16 @@
+- link_to "Edit Project", edit_project_path(@project.id), class: "btn primary small pull-right"
+- page_title "Project: #{@project.title}"
+
+.hero-unit.description~ markdown @project.description.to_s
+
+%table
+  %thead
+    %tr
+      %th Dependends on
+  %tbody
+    - @project.dependencies.each do |dependency|
+      %tr
+        %td
+          - link_to dependency.title, project_path(dependency.id)
+
+- link_to "Remove Project", remove_project_path(@project.id), class: "btn small pull-right"
