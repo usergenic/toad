@@ -7,6 +7,10 @@ def parse_type(name)
   (class << self; self end).const_get(const_name)
 end
 
+def find_item_by_name(name)
+  User.where(username: name).first || Project.where(title: name).first
+end
+
 Given("there are no users") { User.count.should == 0 }
 
 Given(/^there is an? ([^"]*) with (.*)$/) do |type, attrs|
