@@ -17,6 +17,13 @@ Given(/^there is an? ([^"]*) with (.*)$/) do |type, attrs|
   parse_type(type).create(parse_attrs(attrs)).should be_persisted
 end
 
+Given(/^"([^"]*)" has ([^"]*) ((?:"[^"]*")(?: and )?)*$/) do |subject, association, associates|
+  subject    = find_item_by_name(subject)
+  associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }
+  associates = associates.first unless subject.send(association).is_a?(Enumerable)
+  subject.send "#{association}=", associates
+end
+
 Then(/^"([^"]*)" should have ([^"]*) ((?:"[^"]*")(?: and )?)*$/) do |subject, association, associates|
   subject = find_item_by_name(subject)
   associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }

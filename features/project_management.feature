@@ -22,3 +22,13 @@ Scenario: Submit the new project form to create a project
   And there should be a project with title "Make Omelete" and description "Scramble up the goodness"
   And "Make Omelete" should have dependencies "Break eggs"
 
+Scenario: View a project
+  Given there is a project with title "Chop down trees"
+  And there is a project with title "Assemble log cabin" and description "Stack and fasten logs"
+  And "Assemble log cabin" has dependencies "Chop down trees"
+  When I visit the "Project" page for "Assemble log cabin"
+  Then I should see the title text "Assemble log cabin"
+  And I should see the description text "Stack and fasten logs"
+  And I should see the dependency text "Chop down trees"
+
+

@@ -4,7 +4,9 @@
   - fieldset do
     - text_field "title", label: "Title", value: @project.title
     - text_area "description", label: "Description", value: @project.description
-    - ajax_list_builder "dependencies", projects_autocomplete_path, label: "Dependencies", value: @project.dependencies.map(&:title)
+    - ajax_list_builder "dependencies", projects_autocomplete_path,
+                        label: "Dependencies",
+                        value: @project.dependencies.map(&:title)
   - actions do
     - submit "Create"
     - cancel

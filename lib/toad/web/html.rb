@@ -35,6 +35,10 @@ module Toad::Web::HTML
     haml_concat(*a,&b)
   end
 
+  def edit_link(text, path)
+    link_to text, path, class: "btn primary small pull-right"
+  end
+
   def error
     tag "div", class: "alert-message block-message error", &proc
   end
@@ -69,11 +73,15 @@ module Toad::Web::HTML
   end
 
   def page_title(title)
-    tag "h1", title, class: "page-title"
+    tag "h1", title, class: "page-title title"
   end
 
   def password_field(name, options={})
     text_field(name, options.merge(type: "password"))
+  end
+
+  def remove_link(text, path)
+    link_to text, path, class: "btn small pull-right"
   end
 
   def submit(text, attributes={})
