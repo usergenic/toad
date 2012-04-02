@@ -4,6 +4,11 @@ Given("I am logged in") do
 end
 
 Given(/^I am on the "([^"]*)" page$/) { |page| visit path_for(page) }
+
+Given(/^I am on the "([^"]*)" page for "([^"]*)"$/) do |page, item|
+  visit path_for(page, find_item_by_name(item).id)
+end
+
 When(/^I visit the "([^"]*)" page$/) { |page| visit path_for(page) }
 
 When(/^I visit the "([^"]*)" page for "([^"]*)"$/) do |page, item|

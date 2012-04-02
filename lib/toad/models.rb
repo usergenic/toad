@@ -5,10 +5,6 @@ module Toad::Models
   Mongoids = Project, User
 
   def self.connect!
-    return if @connected
-
-    Toad.log [self, "connecting..."]
-
     Mongoid.configure do |config|
       environment = Toad.env
       database_name = ENV["TOAD_MONGODB_DATABASE"] || "toad_#{environment}"
@@ -31,9 +27,6 @@ module Toad::Models
 
       config.master = connection[database_name]
     end
-
-    Toad.log [self, "connected."]
-    @connected = true
   end
 
   # Careful with this one

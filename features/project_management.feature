@@ -31,4 +31,8 @@ Scenario: View a project
   And I should see the description text "Stack and fasten logs"
   And I should see the dependency text "Chop down trees"
 
-
+Scenario: Access the edit project form
+  Given there is a project with title "Build-a-Bear"
+  And I am on the "Project" page for "Build-a-Bear"
+  When I click the "Edit" link
+  Then I should be on the "Edit Project" page for "Build-a-Bear"
