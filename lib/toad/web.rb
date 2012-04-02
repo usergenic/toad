@@ -5,6 +5,7 @@ module Toad
   class Web < Sinatra::Base
 
     set :dump_errors, true
+    set :show_exceptions, true
     set :haml, ugly:true
     set :public_folder, __FILE__.sub(/\.rb$/, "/public")
     set :views, __FILE__.sub(/\.rb$/, "/views")
