@@ -1,6 +1,8 @@
 ENV["TOAD_ENV"] = "test"
 ENV["TOAD_LOG"] ||= "log/test.log" unless ENV["TOAD_NOLOG"]
 
+$LOAD_PATH.unshift "lib"
+
 require "capybara/cucumber"
 require "toad"
 
