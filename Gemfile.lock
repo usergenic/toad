@@ -100,4 +100,3 @@ DEPENDENCIES
   rake
   rspec
   sinatra
-  toad!
