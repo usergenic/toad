@@ -1,3 +1,14 @@
+PATH
+  remote: .
+  specs:
+    toad (1.0.0)
+      activesupport
+      bson_ext
+      haml
+      maruku
+      mongoid
+      sinatra
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -89,3 +100,4 @@ DEPENDENCIES
   rake
   rspec
   sinatra
+  toad!
