@@ -1,5 +1,6 @@
-PATH
-  remote: .
+GIT
+  remote: https://github.com/brendan/toad.git
+  revision: b080c67a2283b3c61f78618424b4ab07a16d5fee
   specs:
     toad (1.0.0)
       bson_ext
@@ -89,7 +90,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   bson_ext
   capybara
   cucumber

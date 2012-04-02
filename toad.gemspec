@@ -10,13 +10,13 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(/^bin\//).map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_dependency "activesupport"
   s.add_dependency "mongoid"
   s.add_dependency "bson_ext"
   s.add_dependency "sinatra"
   s.add_dependency "haml"
   s.add_dependency "maruku"
 
-  s.add_development_dependency "activesupport"
   s.add_development_dependency "capybara"
   s.add_development_dependency "cucumber"
   s.add_development_dependency "rack-test"
