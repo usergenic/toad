@@ -90,9 +90,14 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  bson_ext
   capybara
   cucumber
+  haml
+  maruku
+  mongoid
   rack-test
   rake
   rspec
+  sinatra
   toad!
