@@ -9,13 +9,15 @@ module Toad
     @env ||= ENV["TOAD_ENV"] || ENV["RACK_ENV"] || "development"
   end
 
-  unless Toad.constants.any? { |c| c.to_s == "Logger" }
-    Toad::Logger = Object::Logger.new(ENV["TOAD_LOG"] || $stdout) unless ENV["TOAD_NOLOG"]
+  def self.log msg, opts={}
+    return unless Toad::Logger
+    level = opts[:level] || :info
+    Toad::Logger.send(level, msg)
+  end
 
-    original_formatter = Object::Logger::Formatter.new
-    Logger.formatter = proc do |severity, datetime, progname, msg|
-      original_formatter.call(severity, datetime, progname, caller[4].to_s + " => " + msg.inspect)
-    end
+  unless ENV["TOAD_NOLOG"] or Toad.constants.any? { |c| c.to_s == "Logger" }
+    Toad::Logger = Object::Logger.new(ENV["TOAD_LOG"] || $stdout)
+    Toad::Logger.level = Object::Logger.const_get(ENV["LOG_LEVEL"] || ENV["TOAD_LOG_LEVEL"] || "DEBUG")
   end
 
   Models.connect!
