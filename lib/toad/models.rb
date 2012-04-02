@@ -7,6 +7,8 @@ module Toad::Models
   def self.connect!
     return if @connected
 
+    Toad.log [self, "connecting..."]
+
     Mongoid.configure do |config|
       environment = Toad.env
       database_name = ENV["TOAD_MONGODB_DATABASE"] || "toad_#{environment}"
