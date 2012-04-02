@@ -14,7 +14,7 @@ module Toad
   original_formatter = Object::Logger::Formatter.new
   Logger.formatter = proc do |severity, datetime, progname, msg|
     original_formatter.call(severity, datetime, progname, caller[4].to_s + " => " + msg.inspect)
-  End
+  end
 
   Models.connect!
 end
