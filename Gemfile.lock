@@ -1,14 +1,3 @@
-GIT
-  remote: https://github.com/brendan/toad.git
-  revision: b080c67a2283b3c61f78618424b4ab07a16d5fee
-  specs:
-    toad (1.0.0)
-      bson_ext
-      haml
-      maruku
-      mongoid
-      sinatra
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -100,4 +89,3 @@ DEPENDENCIES
   rake
   rspec
   sinatra
-  toad!
