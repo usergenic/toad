@@ -34,5 +34,9 @@ Then(/^there should be a ([^"]*) with (.*)$/) do |type, attrs|
   parse_type(type).where(parse_attrs(attrs)).count.should == 1
 end
 
+Then(/^there should not be a ([^"]*) with (.*)$/) do |type, attrs|
+  parse_type(type).where(parse_attrs(attrs)).count.should == 0
+end
+
 
 

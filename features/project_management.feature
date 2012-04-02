@@ -31,8 +31,22 @@ Scenario: View a project
   And I should see the description text "Stack and fasten logs"
   And I should see the dependency text "Chop down trees"
 
-Scenario: Access the edit project form
+Scenario: Access the edit project page
   Given there is a project with title "Build-a-Bear"
   And I am on the "Project" page for "Build-a-Bear"
   When I click the "Edit" link
   Then I should be on the "Edit Project" page for "Build-a-Bear"
+
+Scenario: Submit the edit project form to update a project
+  Given there is a project with title "Super Project"
+  And there is a project with title "Duper Project"
+  And there is a project with title "Looper Project"
+  And "Super Project" has dependencies "Duper Project"
+  And I am on the "Edit Project" page for "Super Project"
+  When I fill in "title" with "Hooper Project"
+  And I fill in "description" with "Hoop-a-doop!"
+  And I fill in "dependencies" with tags "Looper Project" and "Duper Project"
+  And I click the "Save Changes" button
+  Then I should be on the "Project" page for "Hooper Project"
+  And there should not be a project with title "Super Project"
+
