@@ -23,7 +23,7 @@ module Toad::Models
 
       connection = Mongo::Connection.new \
         ENV["TOAD_MONGODB_HOST"] || "localhost",
-        (ENV["TOAD_MONGODB_PORT"] || "27017").to_s,
+        ENV["TOAD_MONGODB_PORT"] || "27017",
         connection_options
 
       config.master = connection[database_name]
