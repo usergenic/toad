@@ -1,5 +1,4 @@
 require "sinatra/base"
-require "markdown"
 
 module Toad
 

@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency "bson_ext"
   s.add_dependency "sinatra"
   s.add_dependency "haml"
-  s.add_dependency "rdiscount"
+  s.add_dependency "maruku"
 
   s.add_development_dependency "activesupport"
   s.add_development_dependency "capybara"
