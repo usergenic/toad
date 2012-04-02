@@ -1,4 +1,5 @@
 task :env do
+  $LOAD_PATH.unshift "lib"
   require "toad"
 end
 
