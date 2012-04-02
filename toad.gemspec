@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version       = "1.0.0"
   s.authors       = ["Brendan Baldwin"]
   s.email         = ["brendan@usergenic.com"]
-  s.homepage      = "https://github.com/brendan/ladder"
+  s.homepage      = "https://github.com/brendan/toad"
   s.summary       = %q{toad: "TO A Destination" a simple web application that links projects to each other and helps you find your way to your destination.}
   s.description   = %q{Are you one of these people that has a million ideas for projects that are sometimes interrelated and you need to manage all that somehow but feel like existing project management tools and such are too heavy or not useful for charting the way etc etc?  Let the Toad help!}
   s.files         = `git ls-files`.split("\n")
