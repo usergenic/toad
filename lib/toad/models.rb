@@ -15,11 +15,11 @@ module Toad::Models
       connection_options = {}
 
       if ENV["TOAD_MONGODB_USERNAME"]
-        connection_options[:auths] = {
+        connection_options[:auths] = [{
           "username" => ENV["TOAD_MONGODB_USERNAME"],
           "password" => ENV["TOAD_MONGODB_PASSWORD"],
           "db_name"  => database_name
-        }
+        }]
       end
 
       connection_options[:logger] = config.logger = Toad::Logger
