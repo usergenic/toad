@@ -9,7 +9,7 @@ module Toad
     @env ||= ENV["TOAD_ENV"] || ENV["RACK_ENV"] || "development"
   end
 
-  Logger = Object::Logger.new(ENV["TOAD_LOG"] || $stdout) unless ENV["TOAD_NOLOG"]
+  Toad::Logger = Object::Logger.new(ENV["TOAD_LOG"] || $stdout) unless ENV["TOAD_NOLOG"]
 
   original_formatter = Object::Logger::Formatter.new
   Logger.formatter = proc do |severity, datetime, progname, msg|
