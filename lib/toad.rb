@@ -9,7 +9,7 @@ module Toad
     @env ||= ENV["TOAD_ENV"] || ENV["RACK_ENV"] || "development"
   end
 
-  Logger ||= Object::Logger.new(ENV["TOAD_LOG"] || $stdout) unless ENV["TOAD_NOLOG"]
+  Logger = Object::Logger.new(ENV["TOAD_LOG"] || $stdout) unless ENV["TOAD_NOLOG"]
 
   Models.connect!
 end
