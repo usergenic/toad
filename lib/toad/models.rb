@@ -18,7 +18,7 @@ module Toad::Models
         connection_options[:auths] = {
           "username" => ENV["TOAD_MONGODB_USERNAME"],
           "password" => ENV["TOAD_MONGODB_PASSWORD"],
-          "db_name"  => ENV["TOAD_MONGODB_DATABASE"]
+          "db_name"  => database_name
         }
       end
 
