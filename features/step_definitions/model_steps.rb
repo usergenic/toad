@@ -17,17 +17,20 @@ Given(/^there is an? ([^"]*) with (.*)$/) do |type, attrs|
   parse_type(type).create(parse_attrs(attrs)).should be_persisted
 end
 
-Given(/^"([^"]*)" has ([^"]*) ((?:"[^"]*")(?: and )?)*$/) do |subject, association, associates|
+Given(/^"([^"]*)" has ([^"]*) ((?:"[^"]*"(?: and )?)*)$/) do |subject, association, associates|
   subject    = find_item_by_name(subject)
+  puts subject.send(association).class
+  is_many    = subject.send(association).is_a?(Enumerable)
   associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }
-  associates = associates.first unless subject.send(association).is_a?(Enumerable)
+  associates = associates.first unless is_many
   subject.send "#{association}=", associates
+  subject.send(association).should include(*associates) if is_many
 end
 
-Then(/^"([^"]*)" should have ([^"]*) ((?:"[^"]*")(?: and )?)*$/) do |subject, association, associates|
+Then(/^"([^"]*)" should have ([^"]*) ((?:"[^"]*"(?: and )?)*)$/) do |subject, association, associates|
   subject = find_item_by_name(subject)
   associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }
-  associates.should == [*subject.send(association)]
+  associates.should include(*subject.send(association))
 end
 
 Then(/^there should be a ([^"]*) with (.*)$/) do |type, attrs|
