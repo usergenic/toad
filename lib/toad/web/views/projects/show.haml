@@ -1,16 +1,34 @@
 - edit_link "Edit Project", edit_project_path(@project.id)
 - page_title "Project: #{@project.title}"
 
-.hero-unit.description~ markdown @project.description.to_s
+.row
 
-%table
-  %thead
-    %tr
-      %th Dependends on
-  %tbody
-    - @project.dependencies.each do |dependency|
-      %tr.dependency
-        %td
-          - link_to dependency.title, project_path(dependency.id)
+  .span7
 
-- remove_link "Remove Project", remove_project_path(@project.id)
+    .well
+      - project_tags @project.tags
+      - project_description @project.description
+
+  .span5
+
+    %h3 Project Dependency Chain
+
+    %table.path.tagged
+      %thead
+        %th
+          Title
+        %th
+          Tags
+          %span.tagged
+      %tbody
+        - @project.path.each do |project|
+          %tr.dependency
+            %td
+              - link_to project.title, project_path(project.id)
+            %td
+              - project_tags project.tags
+
+.row
+
+  .span12
+    - remove_link "Remove Project", remove_project_path(@project.id)

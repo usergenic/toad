@@ -1,0 +1,9 @@
+- page_title "Edit Tag: #{@tag.text}"
+
+- form tag_path(@tag.id), method: "put" do
+  - fieldset do
+    - text_field "text", label: "Tag Text", value: @tag.text
+    - treatment_select "treatment", label: "Treatment", value: @tag.treatment
+  - actions do
+    - submit "Save Changes"
+    - cancel "Cancel", tags_path

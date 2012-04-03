@@ -10,11 +10,12 @@ module Toad::Web::HTML
 
   def ajax_list_builder(name, data_url, attrs={})
     attrs = attrs.dup
+    filter = attrs.delete(:filter)
     values = [*attrs.delete(:value)]
     text_field name, attrs
     tag "script", <<-javascript
       $('##{attrs[:id] || name}').textext({
-        plugins : 'autocomplete tags ajax',
+        plugins : 'autocomplete tags #{'filter' if filter} ajax',
         tags : {
           items : #{values.to_json}
         },
@@ -73,11 +74,28 @@ module Toad::Web::HTML
   end
 
   def page_title(title)
+    @page_title = title # save it for the layout :-)
     tag "h1", title, class: "page-title title"
   end
 
   def password_field(name, options={})
     text_field(name, options.merge(type: "password"))
+  end
+
+  def project_list(projects)
+    tag "table", class: "project-list" do
+    end
+  end
+
+  def project_description(text)
+    tag "div", preserve(markdown(text.to_s)), class: "description"
+  end
+
+  def project_tags(project_tags)
+    project_tags.sort_by(&:text).each do |project_tag|
+      tag "span", h(project_tag.text), :class => "label #{project_tag.treatment}",
+                                       :"data-tag" => project_tag.id
+    end
   end
 
   def remove_link(text, path)
@@ -136,6 +154,27 @@ module Toad::Web::HTML
       tag "label", label, for: attrs[:id] if label
       tag "div", class: "input" do
         tag "input", {class: "span6"}.merge(attrs)
+      end
+    end
+  end
+
+  def treatment_select(name, options={})
+    attrs = options.dup
+    label = attrs.delete(:label) || name
+    value = attrs.delete :value
+    tag "div", class: "clearfix" do
+      tag "label", label, for: name
+      tag "ul", class: "inputs-list" do
+        %w[default success warning important notice].each do |treatment|
+          tag "li" do
+            tag "label" do
+              input_attrs = {name: name, type: "radio", value: treatment}.merge(attrs)
+              input_attrs[:checked] = true if @tag.treatment == treatment
+              tag "input", input_attrs
+              tag "span", treatment, class: "label #{treatment}"
+            end
+          end
+        end
       end
     end
   end

@@ -40,6 +40,26 @@ module Toad::Web::Resources
     join_path project_path(project_id), "remove"
   end
 
+  def tags_path
+    "/tags"
+  end
+
+  def tags_autocomplete_path
+    join_path tags_path, "autocomplete"
+  end
+
+  def tag_path(tag_id)
+    join_path tags_path, tag_id
+  end
+
+  def new_tag_path
+    tag_path "new"
+  end
+
+  def edit_tag_path(tag_id)
+    join_path tag_path(tag_id), "edit"
+  end
+
   def users_path
     "/users"
   end

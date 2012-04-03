@@ -1,2 +1,33 @@
-- page_title "Welcome, #{current_user.username}!"
+.span8
+  :markdown
+
+    #{@page_title = "Welcome to Toad"}
+    ===============
+
+    Toad is *intended* to be a simple application for tracking Projects and
+    their Dependencies.
+
+    You [create a Project][1] and write up a nice description for it using
+    [markdown][2] syntax.
+
+    To indicate Project status or for other grouping purposes, you can add
+    [Tags][3] to your project.  Tag colors can be customized (i.e. you can color
+    the "blocked" tag red to call out the status.)
+
+    Tags are always displayed next to Project titles in tables and can be used
+    to filter tables by clicking them.
+
+    When you have multiple Projects defined, you can link them together in the
+    Dependency chain by adding them to the Dependencies list for a Project which
+    is dependent on them.
+
+    Toad presents a "Project Dependency Chain" on each Project's page that shows
+    a calculated step-by-step path from beginning (top) to goal (bottom).  This
+    sequence enforces the rule that dependencies are placed before the items
+    which depend on them.  This allows you to work down the path until you reach
+    your goal.
+
+    [1]: #{new_project_path}
+    [2]: http://daringfireball.net/projects/markdown/syntax
+    [3]: #{tags_path}
 

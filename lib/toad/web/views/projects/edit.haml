@@ -3,9 +3,13 @@
 - form project_path(@project.id), method: "put" do
   - fieldset do
     - text_field "title", label: "Title", value: @project.title
-    - text_area "description", label: "Description", value: @project.description
+    - ajax_list_builder "tags", tags_autocomplete_path,
+                        label: "Tags",
+                        value: @project.tags.map(&:text)
+    - text_area "description", label: "Description", value: @project.description, class: "well span6"
     - ajax_list_builder "dependencies", projects_autocomplete_path,
                         label: "Dependencies",
+                        filter: true,
                         value: @project.dependencies.map(&:title)
   - actions do
     - submit "Save Changes"

@@ -1,0 +1,9 @@
+- page_title "New Tag"
+
+- form tags_path do
+  - fieldset do
+    - text_field "text", label: "Tag Text", value: @tag.text
+    - treatment_select "treatment", label: "Treatment", value: @tag.treatment
+  - actions do
+    - submit "Create"
+    - cancel "Cancel", tags_path

@@ -1,5 +1,7 @@
 #primary-content-area { margin-top: 58px; }
 .hero-unit.description { background-color: #ddf; }
+.well .description { padding-top: 15px; }
+.label { margin-right: 5px; }
 
 /* this stuff is for the list_builder */
 /* Copyright: Guillermo Rauch <http://devthought.com/> - Distributed under MIT - Keep this message! */

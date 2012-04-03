@@ -1,15 +1,22 @@
-- page_title "Projects"
+.row
+  .span12
+    - link_to "New Project", new_project_path, class: "small primary btn pull-right"
+    - page_title "Projects"
 
-%table
-  %thead
-    %tr
-      %th Title
-      %th
-        - link_to "New Project", new_project_path, class: "small primary btn"
-  %tbody
-    - @projects.each do |project|
-      %tr
-        %td
-          - link_to project.title, project_path(project.id)
-
+.row
+  .span12
+    %table.tagged
+      %thead
+        %tr
+          %th.span8 Title
+          %th.span4
+            Tags
+            %span.tagged
+      %tbody
+        - @projects.each do |project|
+          %tr
+            %td.title
+              - link_to project.title, project_path(project.id)
+            %td.tags
+              - project_tags project.tags
 

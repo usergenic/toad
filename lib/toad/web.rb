@@ -4,18 +4,21 @@ module Toad
 
   class Web < Sinatra::Base
 
-    set :dump_errors, true
-    set :show_exceptions, true
-    set :haml, ugly:true
+    enable :logging
+    enable :dump_errors
+    enable :show_exceptions
+
+    set :haml, ugly: true
     set :public_folder, __FILE__.sub(/\.rb$/, "/public")
     set :views, __FILE__.sub(/\.rb$/, "/views")
 
     use Rack::MethodOverride
 
     if Toad::Logger
-      # For Rack::CommonLogger compatability, define #write
+      # define #write for Rack::CommonLogger compatability
       Toad::Logger.class_eval { alias write info }
       use Rack::CommonLogger, Toad::Logger
+      enable :logging
     end
 
     extend Resources
@@ -102,11 +105,12 @@ module Toad
     end
 
     get projects_autocomplete_path do
-      @projects = Project.all(sort: [[:title, :asc]]).to_a
-      unless params[:q].to_s.empty?
-        regexp = Regexp.new(Regexp.escape(params[:q]),"i")
-        @projects.select! { |p| p.title =~ regexp }
-        @projects.sort_by! { |p| [p.title =~ regexp, p.title] }
+      @projects = Project.only(:id, :title).asc(:title).limit(30)
+      q = params[:q].to_s
+      unless q.empty?
+        js_matcher = "this.title.toLowerCase().indexOf(#{q.downcase.to_json})+1"
+        @projects = @projects.where(js_matcher)
+        @projects.sort_by! { |p| [p.title =~ Regexp.new(Regexp.escape(q)), p.title] }
       end
       @projects.map(&:title).to_json
     end
@@ -118,10 +122,12 @@ module Toad
 
     post projects_path do
       dependencies = parse_dependencies_param(params[:dependencies])
+      tags = parse_tags_param(params[:tags])
       @project = Project.create \
         title:        params[:title],
         description:  params[:description],
-        dependencies: dependencies
+        dependencies: dependencies,
+        tags:         tags
       redirect project_path(@project.id)
     end
 
@@ -137,11 +143,13 @@ module Toad
 
     put project_path(":project_id") do
       dependencies = parse_dependencies_param(params[:dependencies])
+      tags = parse_tags_param(params[:tags])
       @project = Project.find(params[:project_id])
       @project.update_attributes \
         title:        params[:title],
         description:  params[:description],
-        dependencies: dependencies
+        dependencies: dependencies,
+        tags:         tags
       redirect project_path(@project.id)
     end
 
@@ -156,11 +164,62 @@ module Toad
       redirect projects_path
     end
 
+    get tags_path do
+      @tags = Tag.all(sort: [[:text, :asc]]).to_a
+      haml :"tags/index"
+    end
+
+    get new_tag_path do
+      @tag = Tag.new
+      haml :"tags/new"
+    end
+
+    post tags_path do
+      Tag.create \
+        text:      params[:text],
+        treatment: params[:treatment]
+      redirect tags_path
+    end
+
+    get edit_tag_path(":tag_id") do
+      @tag = Tag.find(params[:tag_id])
+      haml :"tags/edit"
+    end
+
+    put tag_path(":tag_id") do
+      @tag = Tag.find(params[:tag_id])
+      @tag.update_attributes \
+        text:      params[:text],
+        treatment: params[:treatment]
+      redirect tags_path
+    end
+
+    get tags_autocomplete_path do
+      @tags = Tag.only(:id, :text).asc(:text).limit(30)
+      q = params[:q].to_s
+      unless q.empty?
+        js_matcher = "this.text.toLowerCase().indexOf(#{q.downcase.to_json})+1"
+        @tags = @tags.where(js_matcher)
+        @tags.sort_by! { |t| [t.text =~ Regexp.new(Regexp.escape(q)), t.text] }
+      end
+      @tags.map(&:text).to_json
+    end
+
     private
 
     def parse_dependencies_param(param)
       titles = JSON.parse(param.to_s)
       Toad::Models::Project.where(:title.in => titles).all.to_a
+    end
+
+    def parse_tags_param(param)
+      texts = JSON.parse(param.to_s)
+      tags = Toad::Models::Tag.where(:text.in => texts).all.to_a
+      texts.each do |text|
+        next if tags.any? { |tag| tag.text == text }
+        tags << Toad::Models::Tag.create(text: text)
+      end
+      tags
     end
   end
 end

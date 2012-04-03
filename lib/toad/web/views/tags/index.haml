@@ -1,0 +1,5 @@
+- link_to "New Tag", new_tag_path, class: "small primary btn pull-right"
+- page_title "Tags"
+
+- @tags.each do |tag|
+  - link_to tag.text, edit_tag_path(tag.id), class: "label #{tag.treatment}"

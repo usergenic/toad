@@ -26,6 +26,13 @@ Then(/^I should be on the "([^"]*)" page for "([^"]*)"$/) do |pagename, itemname
   page.current_path.should == path_for(pagename, item.id)
 end
 
+Then(/^I should see the "([^"]*)" table$/) do |name, expected_table|
+  html_tables = page.all("##{name}, .#{name}").map do |table|
+    table.all('tr').map { |row| row.all('th,td').map { |cell| cell.text.to_s.strip } }
+  end
+  expected_table.diff!(html_tables.inject(&:+))
+end
+
 Then(/^I should see the ([^"]*) text "([^"]*)"$/) do |container, text|
   page.find("##{container}, .#{container}").text.should match(text)
 end

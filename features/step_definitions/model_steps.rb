@@ -8,7 +8,7 @@ def parse_type(name)
 end
 
 def find_item_by_name(name)
-  User.where(username: name).first || Project.where(title: name).first
+  User.where(username: name).first || Project.where(title: name).first || Tag.where(text: name).first
 end
 
 Given("there are no users") { User.count.should == 0 }
@@ -19,7 +19,6 @@ end
 
 Given(/^"([^"]*)" has ([^"]*) ((?:"[^"]*"(?: and )?)*)$/) do |subject, association, associates|
   subject    = find_item_by_name(subject)
-  puts subject.send(association).class
   is_many    = subject.send(association).is_a?(Enumerable)
   associates = associates.scan(/"([^"]*)"(?: and )?/).flatten.map { |n| find_item_by_name(n) }
   associates = associates.first unless is_many

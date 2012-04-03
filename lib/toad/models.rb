@@ -2,7 +2,7 @@ require "mongoid"
 
 module Toad::Models
 
-  Mongoids = Project, User
+  Mongoids = Project, User, Tag
 
   def self.connect!
     Mongoid.configure do |config|
