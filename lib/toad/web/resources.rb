@@ -32,6 +32,10 @@ module Toad::Web::Resources
     project_path "new"
   end
 
+  def lookup_project_path
+    project_path "lookup"
+  end
+
   def edit_project_path(project_id)
     join_path project_path(project_id), "edit"
   end

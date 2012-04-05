@@ -1,0 +1,7 @@
+<%= {
+  id: @project.id,
+  title: @project.title,
+  description: @project.description,
+  dependencies: @project.dependencies.map(&:title).sort,
+  tags: @project.tags.map(&:text).sort
+}.to_json %>

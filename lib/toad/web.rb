@@ -38,7 +38,6 @@ module Toad
       end
     end
 
-
     get home_path do
       respond_with "welcome"
     end
@@ -135,6 +134,11 @@ module Toad
       redirect project_path(@project.id)
     end
 
+    get lookup_project_path do
+      @project = Project.where(title: params[:title]).first
+      respond_with "projects/show"
+    end
+
     get project_path(":project_id") do
       @project = Project.find(params[:project_id])
       respond_with "projects/show"
@@ -214,7 +218,7 @@ module Toad
     # TODO: port the duplicative logic in parse_* methods to a
     # Toad::Models#find_or_create_all_by method.
     def parse_dependencies_param(param)
-      titles = JSON.parse(param.to_s)
+      titles = param.is_a?(Array) ? param : JSON.parse(param.to_s)
       projects = Toad::Models::Project.where(:title.in => titles).all.to_a
       titles.each do |title|
         next if projects.any? { |project| project.title == title }
@@ -224,7 +228,7 @@ module Toad
     end
 
     def parse_tags_param(param)
-      texts = JSON.parse(param.to_s)
+      texts = param.is_a?(Array) ? param : JSON.parse(param.to_s)
       tags = Toad::Models::Tag.where(:text.in => texts).all.to_a
       texts.each do |text|
         next if tags.any? { |tag| tag.text == text }

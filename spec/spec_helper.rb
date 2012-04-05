@@ -9,12 +9,20 @@ require "artifice"
 require "toad"
 
 RSpec.configure do |config|
+
   config.include Rack::Test::Methods
+
   config.before do
+
     Toad::Models.destroy_all!
-    Artifice.activate_with(Toad::Web)
-    def app() Toad::Web end
+
+    Artifice.activate_with Toad::Web
+
+    def app()
+      Toad::Web
+    end
   end
+
   config.after do
     Artifice.deactivate
   end
