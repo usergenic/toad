@@ -16,7 +16,11 @@ Gem::Specification.new do |s|
   s.add_dependency "sinatra"
   s.add_dependency "haml"
   s.add_dependency "maruku"
+  s.add_dependency "rack-abstract-format"
+  s.add_dependency "rack-accept-media-types"
+  s.add_dependency "rest-client"
 
+  s.add_development_dependency "artifice"
   s.add_development_dependency "capybara"
   s.add_development_dependency "cucumber"
   s.add_development_dependency "rack-test"

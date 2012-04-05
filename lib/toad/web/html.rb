@@ -15,7 +15,7 @@ module Toad::Web::HTML
     text_field name, attrs
     tag "script", <<-javascript
       $('##{attrs[:id] || name}').textext({
-        plugins : 'autocomplete tags #{'filter' if filter} ajax',
+        plugins : 'autocomplete tags ajax',
         tags : {
           items : #{values.to_json}
         },

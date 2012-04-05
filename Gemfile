@@ -39,8 +39,12 @@ gem "bson_ext"
 gem "sinatra"
 gem "haml"
 gem "maruku"
+gem "rack-abstract-format"
+gem "rack-accept-media-types"
+gem "rest-client"
 
 group :development do
+  gem "artifice"
   gem "capybara"
   gem "cucumber"
   gem "rack-test"

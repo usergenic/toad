@@ -12,7 +12,12 @@ end
 When(/^I visit the "([^"]*)" page$/) { |page| visit path_for(page) }
 
 When(/^I visit the "([^"]*)" page for "([^"]*)"$/) do |page, item|
+  begin
   visit path_for(page, find_item_by_name(item).id)
+    rescue => e
+    puts e.backtrace.join("\n")
+    raise
+  end
 end
 
 When(/^I fill in "([^"]*)" with "([^"]*)"$/) { |name, value| fill_in name, with: value }

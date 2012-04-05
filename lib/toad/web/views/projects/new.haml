@@ -9,7 +9,6 @@
     - text_area "description", label: "Description", value: @project.description, class: "well span6"
     - ajax_list_builder "dependencies", projects_autocomplete_path,
                         label: "Dependencies",
-                        filter: true,
                         value: @project.dependencies.map(&:title)
   - actions do
     - submit "Create"

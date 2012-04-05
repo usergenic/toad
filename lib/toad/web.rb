@@ -1,4 +1,6 @@
 require "sinatra/base"
+require "rack/abstract_format"
+require "rack/accept_media_types"
 
 module Toad
 
@@ -9,10 +11,11 @@ module Toad
     enable :show_exceptions
 
     set :haml, ugly: true
-    set :public_folder, __FILE__.sub(/\.rb$/, "/public")
     set :views, __FILE__.sub(/\.rb$/, "/views")
 
+    use Rack::Static, urls: ["/css", "/js"], root: __FILE__.sub(/\.rb$/, "/public")
     use Rack::MethodOverride
+    use Rack::AbstractFormat
 
     if Toad::Logger
       # define #write for Rack::CommonLogger compatability
@@ -35,14 +38,15 @@ module Toad
       end
     end
 
+
     get home_path do
-      haml :"welcome"
+      respond_with "welcome"
     end
 
     get first_user_path do
       redirect home_path if current_user
       @user = User.new
-      haml :"first_user"
+      respond_with "first_user"
     end
 
     post first_user_path do
@@ -55,12 +59,12 @@ module Toad
 
     get users_path do
       @users = User.all(sort: [[:title, :asc]])
-      haml :"users/index"
+      respond_with "users/index"
     end
 
     get new_user_path do
       @user = User.new
-      haml :"users/new"
+      respond_with "users/new"
     end
 
     post users_path do
@@ -72,12 +76,12 @@ module Toad
 
     get user_path(":user_id") do
       @user = User.find(params[:user_id])
-      haml :"users/show"
+      respond_with "users/show"
     end
 
     get edit_user_path(":user_id") do
       @user = User.find(params[:user_id])
-      haml :"users/edit"
+      respond_with "users/edit"
     end
 
     put user_path(":user_id") do
@@ -90,7 +94,7 @@ module Toad
 
     get remove_user_path(":user_id") do
       @user = User.find(params[:user_id])
-      haml :"users/remove"
+      respond_with "users/remove"
     end
 
     delete user_path(":user_id") do
@@ -101,7 +105,7 @@ module Toad
 
     get projects_path do
       @projects = Project.all(sort: [[:title, :asc]])
-      haml :"projects/index"
+      respond_with "projects/index"
     end
 
     get projects_autocomplete_path do
@@ -112,12 +116,12 @@ module Toad
         @projects = @projects.where(js_matcher)
         @projects.sort_by! { |p| [p.title =~ Regexp.new(Regexp.escape(q)), p.title] }
       end
-      @projects.map(&:title).to_json
+      respond_with "projects/autocomplete"
     end
 
     get new_project_path do
       @project = Project.new
-      haml :"projects/new"
+      respond_with "projects/new"
     end
 
     post projects_path do
@@ -133,12 +137,12 @@ module Toad
 
     get project_path(":project_id") do
       @project = Project.find(params[:project_id])
-      haml :"projects/show"
+      respond_with "projects/show"
     end
 
     get edit_project_path(":project_id") do
       @project = Project.find(params[:project_id])
-      haml :"projects/edit"
+      respond_with "projects/edit"
     end
 
     put project_path(":project_id") do
@@ -155,7 +159,7 @@ module Toad
 
     get remove_project_path(":project_id") do
       @project = Project.find(params[:project_id])
-      haml :"projects/remove"
+      respond_with "projects/remove"
     end
 
     delete project_path(":project_id") do
@@ -166,12 +170,12 @@ module Toad
 
     get tags_path do
       @tags = Tag.all(sort: [[:text, :asc]]).to_a
-      haml :"tags/index"
+      respond_with "tags/index"
     end
 
     get new_tag_path do
       @tag = Tag.new
-      haml :"tags/new"
+      respond_with "tags/new"
     end
 
     post tags_path do
@@ -183,7 +187,7 @@ module Toad
 
     get edit_tag_path(":tag_id") do
       @tag = Tag.find(params[:tag_id])
-      haml :"tags/edit"
+      respond_with "tags/edit"
     end
 
     put tag_path(":tag_id") do
@@ -202,14 +206,21 @@ module Toad
         @tags = @tags.where(js_matcher)
         @tags.sort_by! { |t| [t.text =~ Regexp.new(Regexp.escape(q)), t.text] }
       end
-      @tags.map(&:text).to_json
+      respond_with "tags/autocomplete"
     end
 
     private
 
+    # TODO: port the duplicative logic in parse_* methods to a
+    # Toad::Models#find_or_create_all_by method.
     def parse_dependencies_param(param)
       titles = JSON.parse(param.to_s)
-      Toad::Models::Project.where(:title.in => titles).all.to_a
+      projects = Toad::Models::Project.where(:title.in => titles).all.to_a
+      titles.each do |title|
+        next if projects.any? { |project| project.title == title }
+        projects << Toad::Models::Project.create(title: title)
+      end
+      projects
     end
 
     def parse_tags_param(param)
@@ -220,6 +231,18 @@ module Toad
         tags << Toad::Models::Tag.create(text: text)
       end
       tags
+    end
+
+    def respond_with(template, options={})
+      accepted_types = *(options[:accept] || ["application/json", "text/html"])
+      media_type = request.accept_media_types.find do |type|
+        accepted_types.include?(type)
+      end
+      case media_type
+      when "application/json"
+        [200, {"Content-Type" => "application/json"}, erb(template.to_sym)]
+      else haml(template.to_sym) # for html
+      end
     end
   end
 end
