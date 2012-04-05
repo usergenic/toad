@@ -118,6 +118,11 @@ module Toad
       respond_with "projects/autocomplete"
     end
 
+    get project_path_path(":project_id") do
+      @project = Project.find(params[:project_id])
+      @project.path.map(&:title).to_json
+    end
+
     get new_project_path do
       @project = Project.new
       respond_with "projects/new"
@@ -218,6 +223,7 @@ module Toad
     # TODO: port the duplicative logic in parse_* methods to a
     # Toad::Models#find_or_create_all_by method.
     def parse_dependencies_param(param)
+      return [] unless param
       titles = param.is_a?(Array) ? param : JSON.parse(param.to_s)
       projects = Toad::Models::Project.where(:title.in => titles).all.to_a
       titles.each do |title|
@@ -228,6 +234,7 @@ module Toad
     end
 
     def parse_tags_param(param)
+      return [] unless param
       texts = param.is_a?(Array) ? param : JSON.parse(param.to_s)
       tags = Toad::Models::Tag.where(:text.in => texts).all.to_a
       texts.each do |text|

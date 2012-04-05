@@ -8,9 +8,6 @@ describe Toad::Client do
     @client = Toad::Client.new "http://alice:wonderland@toad"
   end
 
-  describe Toad::Client, "#initialize" do
-  end
-
   describe Toad::Client, "#list" do
 
     it "returns an array of all project titles in the system" do
@@ -54,6 +51,11 @@ describe Toad::Client do
         "tags" => ["magical"]
       }
     end
+
+    it "allows creation with nothing more than a name" do
+      a = @client.create("a")
+      a.keys.should include("id", "title", "description", "dependencies", "tags")
+    end
   end
 
   describe Toad::Client, "#update" do
@@ -74,6 +76,18 @@ describe Toad::Client do
         "dependencies" => ["a"],
         "tags" => ["t"]
       }
+    end
+  end
+
+  describe Toad::Client, "#path_to" do
+
+    it "provides an array of the project titles from start to goal" do
+
+      a = Toad::Models::Project.create title:"a"
+      b = Toad::Models::Project.create title:"b", dependencies: [a]
+      c = Toad::Models::Project.create title:"c", dependencies: [b]
+
+      @client.path_to("c").should == ["a", "b", "c"]
     end
   end
 end

@@ -28,6 +28,10 @@ module Toad::Web::Resources
     join_path projects_path, project_id
   end
 
+  def project_path_path(project_id)
+    join_path project_path(project_id), "path"
+  end
+
   def new_project_path
     project_path "new"
   end

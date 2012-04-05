@@ -23,8 +23,10 @@ module Toad
       get projects_path
     end
 
-    def create(title, params)
-      post projects_path, params.merge(title: title)
+    def create(title, params={})
+      params = Hash[params.map { |k, v| [k.to_s, v] }]
+      base = {"title" => title, "dependencies" => [], "tags" => []}
+      post projects_path, base.merge(params)
     end
 
     def update(title, params)
@@ -32,6 +34,11 @@ module Toad
       base = lookup(title)
       base.each { |k, v| params[k] = v unless params.key? k }
       put project_path(base["id"]), params
+    end
+
+    def path_to(title)
+      project_id = lookup(title)["id"]
+      get project_path_path(project_id)
     end
 
     private
