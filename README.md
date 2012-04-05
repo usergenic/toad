@@ -33,8 +33,8 @@ overwritten by use of environment variables:
 
 By default the application logs everything to standard out.  If you want to turn
 off logging, use the `TOAD_NOLOG` environment variable and set it to anything.
-To write to a specific file use the `TOAD_LOG_FILE` environment variable and set
-it to the path of a file that can be written to.
+To write to a specific file use the `TOAD_LOG` environment variable and set it
+to the path of a file that can be written to.
 
 Setup First User Account
 ------------------------
